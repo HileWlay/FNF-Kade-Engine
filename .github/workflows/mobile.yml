@@ -55,7 +55,7 @@ jobs:
           haxelib run lime setup flixel --quiet
           haxelib install flixel-addons 3.2.3 --quiet
           haxelib install hxcpp-debug-server 1.2.4 --quiet
-          haxelib git polymod https://github.com/swordcube/scriptless- polymod.git  --quiet
+          haxelib git polymod https://github.com/swordcube/scriptless-polymod.git  --quiet
           haxelib install flixel-text-input 2.0.2 --quiet
           haxelib git linc_luajit https://github.com/superpowers04/linc_luajit.git --quiet
           haxelib git tjson https://github.com/EliteMasterEric/TJSON.git  --quiet
