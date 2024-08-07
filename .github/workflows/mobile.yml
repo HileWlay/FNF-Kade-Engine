@@ -37,7 +37,7 @@ jobs:
         uses: actions/setup-java@v4.2.2
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '11'
         
       - uses: nttld/setup-ndk@v1.5.0
         with:
