@@ -36,7 +36,7 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v4.2.2
         with:
-          distribution: 'temurin'
+          distribution: 'zulu'
           java-version: '21'
         
       - uses: nttld/setup-ndk@v1.5.0
