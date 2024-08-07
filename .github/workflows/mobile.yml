@@ -47,15 +47,15 @@ jobs:
       - name: script run line haha
         run: |
           mkdir -p "%HAXELIB_ROOT%"
+          haxelib install lime 8.1.3
           haxelib run lime setup
           haxelib run lime config ANDROID_SDK $ANDROID_SDK_ROOT
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_ROOT
           haxelib run lime config JAVA_HOME $JAVA_HOME
           haxelib run lime config ANDROID_SETUP true
-          haxelib setup             "%HAXELIB_ROOT%"
+          haxelib setup "%HAXELIB_ROOT%"
           haxelib run lime setup flixel
           haxelib install flixel 5.8.0
-          haxelib install lime 8.1.3
           haxelib install openfl 9.3.4
           haxelib install flixel-tools 1.5.1
           haxelib install flixel-addons 3.2.3
