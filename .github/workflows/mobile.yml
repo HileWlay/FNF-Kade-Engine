@@ -36,8 +36,8 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v4.2.2
         with:
-          distribution: 'zulu' # See 'Supported distributions' for available options
-          java-version: '11'
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '21'
 
       - name: Setup Android SDL
         uses: libsdl-org/setup-sdl@v1
