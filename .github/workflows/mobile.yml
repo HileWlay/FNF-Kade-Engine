@@ -38,13 +38,23 @@ jobs:
         with:
           distribution: 'zulu' # See 'Supported distributions' for available options
           java-version: '11'
-        
-      - uses: nttld/setup-ndk@v1
-        with:
-          ndk-version: r15c
 
+      - name: Setup Android SDL
+        uses: libsdl-org/setup-sdl@v1
+        id: sdl
+        with:
+          install-dependencies: true
+          version: 2-latest
+          version-sdl-image: 2-latest
+          
+      - name: Setup Android NDK
+        uses: nttld/setup-ndk@v1
+        id: setup-ndk
+        with:
+          ndk-version: r21e
+ 
       # Runs a set of commands using the runners shell
-      - name: script run line haha
+      - name: Install Libraries
         run: |
           mkdir -p "%HAXELIB_ROOT%"
           haxelib setup "%HAXELIB_ROOT%" 
@@ -58,7 +68,7 @@ jobs:
           haxelib git polymod https://github.com/swordcube/scriptless-polymod.git  --quiet
           haxelib install flixel-text-input 2.0.2 --quiet
           haxelib git linc_luajit https://github.com/superpowers04/linc_luajit.git --quiet
-          haxelib git tjson https://github.com/EliteMasterEric/TJSON.git  --quiet
+          haxelib git tjson http s://github.com/EliteMasterEric/TJSON.git  --quiet
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved.git --quiet
           haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc.git --quiet
           haxelib git haxeui-flixel https://github.com/haxeui/haxeui-flixel.git --skip-dependencies
@@ -73,7 +83,7 @@ jobs:
           haxelib run lime config ANDROID_SETUP true
           haxelib list
           
-      - name: funni build logs
+      - name: Compile
         run: haxelib run lime build android -Dci
           
       - uses: actions/upload-artifact@v2
