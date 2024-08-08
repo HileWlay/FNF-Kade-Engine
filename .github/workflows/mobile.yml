@@ -64,7 +64,7 @@ jobs:
           haxelib git polymod https://github.com/swordcube/scriptless-polymod.git  --quiet
           haxelib install flixel-text-input 2.0.2 --quiet
           haxelib git linc_luajit https://github.com/superpowers04/linc_luajit.git --quiet
-          haxelib git tjson http s://github.com/EliteMasterEric/TJSON.git  --quiet
+          haxelib git tjson https://github.com/EliteMasterEric/TJSON.git  --quiet
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved.git --quiet
           haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc.git --quiet
           haxelib git haxeui-flixel https://github.com/haxeui/haxeui-flixel.git --skip-dependencies
