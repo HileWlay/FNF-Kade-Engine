@@ -1,57 +1,59 @@
-name: androidBuild
+# This is a basic workflow to help you get started with Actions
 
-# Controls when the action will run.
-on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+# Based on Kade engine ci
+# Made by luckydog7 for https://github.com/luckydog7/Funkin-android
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+name: Android Build CI
+
+# Controls when the workflow will run
+on: [push, pull_request, workflow_dispatch]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  buildAndroid:
-    name: buildAndroid
+  build:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        storage-type: [EXTERNAL]
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout
-        uses: actions/checkout@main
-      
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4.1.7
+      - uses: krdlab/setup-haxe@v1.5.1
+        with:
+          haxe-version: 4.3.6
+          
+      - name: Cache haxelib path
+        uses: actions/cache@v4.0.2
+        with:
+          path: |
+            %HAXELIB_ROOT%
+          key: ${{ runner.os }}-android
+          
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3.2.1
+        
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.2.2
+        with:
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '11'
+
+      - name: Setup Android SDL
+        uses: libsdl-org/setup-sdl@v1
+        id: sdl
+        with:
+          install-linux-dependencies: true
+          version: 2-latest
+          version-sdl-image: 2-latest
+          
       - name: Setup Android NDK
-        uses: nttld/setup-ndk@main
+        uses: nttld/setup-ndk@v1.5.0
         id: setup-ndk
         with:
           ndk-version: r21e
-
-      - name: Setup Java JDK
-        uses: actions/setup-java@main
-        with:
-          distribution: 'temurin'
-          java-version: '11'
-
-      - name: Setup Haxe
-        uses: krdlab/setup-haxe@master
-        with:
-          haxe-version: 4.3.4
-
-      - name: Restore Previous Cache
-        id: cache-debug-build-android-restore
-        uses: actions/cache/restore@main
-        with:
-          path: |
-            ~/haxelib
-            ~/.gradle
-            export/release/android/haxe
-            export/release/android/obj
-          key: cache-android-build
-
+ 
+      # Runs a set of commands using the runners shell
       - name: Install Libraries
         run: |
           haxelib setup ~/haxelib
@@ -73,9 +75,10 @@ jobs:
           haxelib install hxvlc 1.8.0 --quiet
           haxelib install hscript 2.5.0 --quiet
           haxelib git hxcpp  https://github.com/mcagabe19-stuff/hxcpp.git --quiet
-          
+           
       - name: Configure Android
         run: |
+          haxelib run lime setup
           haxelib run lime config ANDROID_SDK $ANDROID_HOME
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_HOME
           haxelib run lime config JAVA_HOME $JAVA_HOME
@@ -83,14 +86,11 @@ jobs:
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
           
+          
       - name: Compile
-        run: haxelib run lime build android -D ${{ matrix.storage-type }} -final
-        env:
-          cert_pass: nullfunni
-          cert_alias_pass: nullfunni
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@main
+        run: haxelib run lime build android -Dci
+          
+      - uses: actions/upload-artifact@v4.3.6
         with:
-          name: androidBuild
-          path: export/release/android/bin/app/build/outputs/apk/release/*.apk
+          name: Android Build
+          path: export/release/android/bin/app/build/outputs/apk/debug 
