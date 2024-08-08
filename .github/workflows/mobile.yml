@@ -1,14 +1,14 @@
-name: Mobile + Release
-on: workflow_dispatch
+name: Android Build CI
+on: [push, pull_request, workflow_dispatch]
 jobs:
-  Android:
+  android:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1 .7
+        uses: actions/checkout@v4.1.7
         
       - name: Setup Haxe
-        uses: krdlab/setup-haxe@v1.5 .1
+        uses: krdlab/setup-haxe@v1.5.1
         with:
           haxe-version: 4.3.6
 
@@ -53,9 +53,9 @@ jobs:
     permissions: write-all
     steps:
       - name: Download Android Build
-        uses: actions/download-artifact@v4.3.6
+        uses: actions/download-artifact@v4.1.8
         with:
-        needs: [Android]
+        needs: android
            name: androidBuild
            path: /home/runner
 
